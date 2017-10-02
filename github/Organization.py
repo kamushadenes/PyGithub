@@ -278,6 +278,18 @@ class Organization(github.GithubObject.CompletableGithubObject):
         """
         self._completeIfNotSet(self._url)
         return self._url.value
+    
+    def add_membership(self, member):
+        """
+        :calls: `PUT /orgs/:id/memberships/:user <http://developer.github.com/v3/orgs/teams>`_
+        :param member: :class:`github.Nameduser.NamedUser`
+        :rtype: None
+        """
+        assert isinstance(member, github.NamedUser.NamedUser), member
+        headers, data = self._requester.requestJsonAndCheck(
+            "PUT",
+            self.url + "/memberships/" + member._identity
+        )
 
     def add_to_public_members(self, public_member):
         """
